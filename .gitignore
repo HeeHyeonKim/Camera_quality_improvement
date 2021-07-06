@@ -1,9 +1,5 @@
 ## IGNORE FILES ##
 
-dataset/train_input_img/*.png
-dataset/train_label_img/*.png
-dataset/test_input_img/*.png
-dataset/train_input_img_256X256/*.npy
-dataset/train_label_img_256X256/*.npy
-dataset/test_input_img_256X256/*.npy
-sample_submission/*.png
+*.png
+*.csv
+*.txt
