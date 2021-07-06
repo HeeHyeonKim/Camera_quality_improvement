@@ -14,5 +14,5 @@
 
 <br>
 
-![img1](./demo_images/ClassSR.png)
+![img1](./demo_images/ClassSR.jpg)
 
