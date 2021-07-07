@@ -8,6 +8,7 @@ train.csv, test.csv 파일을 읽어와
 import os
 import csv
 import numpy as np
+import shutil
 from tqdm import tqdm
 
 # train_path = "./dataset/train.csv"
@@ -83,7 +84,7 @@ def split_dataset_txt(train_data_path, train_size=0.85, random_state=1004):
     print("\n Completely split all dataset.")
 
 # To train MSRResNet - split .png file
-def split_dataset_txt(train_data_path, train_size=0.85, random_state=1004):
+def split_dataset_txt(train_data_path, txt_path, train_size=0.85, random_state=1004):
     data_list = os.listdir(train_data_path)
     data_len = len(data_list)
     
@@ -94,8 +95,8 @@ def split_dataset_txt(train_data_path, train_size=0.85, random_state=1004):
     shuffled = np.random.permutation(data_len)
 
 
-    train_txt_path = "./datasets/split_train_set/train.txt"
-    validation_txt_path = "./datasets/split_train_set/validation.txt"
+    train_txt_path = txt_path + "_train.txt"
+    validation_txt_path = txt_path + "_validation.txt"
 
     f = open(train_txt_path, 'w')
     print("\n >>> Currently spliting training set.")
@@ -122,8 +123,71 @@ def split_dataset_txt(train_data_path, train_size=0.85, random_state=1004):
     print("\n Completely split all dataset.")
 
 
+"""
+1. SR Branches에 대한 Train, Validation set (.txt) split
 
-# GT_path = "./datasets/train_GT_sub_img/"
-# LR_path = "./datasets/train_LR_sub_img/"
+save_list=[".\\datasets\\SR_branches_datasets\\scale_sub_psnr_LR_class3", # Hard
+           ".\\datasets\\SR_branches_datasets\\scale_sub_psnr_LR_class2", # Middle
+           ".\\datasets\\SR_branches_datasets\\scale_sub_psnr_LR_class1", # Easy
+           ".\\datasets\\SR_branches_datasets\\scale_sub_psnr_GT_class3",
+           ".\\datasets\\SR_branches_datasets\\scale_sub_psnr_GT_class2",
+           ".\\datasets\\SR_branches_datasets\\scale_sub_psnr_GT_class1"]
+
+for i in range(3):
+    path = "./datasets/SR_branches_datasets"
+    data_path = save_list[3+i] # .\\datasets\\SR_branches_datasets\\scale_sub_psnr_GT_class3
+    # data_name = data_path.split("\\")[3] # scale_sub_psnr_GT_class3
+
+    split_dataset_txt(data_path, data_path)
+
+"""
+
+"""
+2. SR Branches 개별 학습을 위한 Train, Validation set (.png) split
+
+"""
+
+mk_dataset_idx = ["./datasets/SR_branches_datasets/scale_sub_psnr_class1_train.txt",
+            "./datasets/SR_branches_datasets/scale_sub_psnr_class1_validation.txt",
+            "./datasets/SR_branches_datasets/scale_sub_psnr_class2_train.txt",
+            "./datasets/SR_branches_datasets/scale_sub_psnr_class2_validation.txt",
+            "./datasets/SR_branches_datasets/scale_sub_psnr_class3_train.txt",
+            "./datasets/SR_branches_datasets/scale_sub_psnr_class3_validation.txt"]
+
+destination = ["./datasets/SR_branches_datasets_for_train/class1_train/GT",
+        "./datasets/SR_branches_datasets_for_train/class1_train/LR",
+        "./datasets/SR_branches_datasets_for_train/class1_validation/GT",
+        "./datasets/SR_branches_datasets_for_train/class1_validation/LR",
+        "./datasets/SR_branches_datasets_for_train/class2_train/GT",
+        "./datasets/SR_branches_datasets_for_train/class2_train/LR",
+        "./datasets/SR_branches_datasets_for_train/class2_validation/GT",
+        "./datasets/SR_branches_datasets_for_train/class2_validation/LR",
+        "./datasets/SR_branches_datasets_for_train/class3_train/GT",
+        "./datasets/SR_branches_datasets_for_train/class3_train/LR",
+        "./datasets/SR_branches_datasets_for_train/class3_validation/GT",
+        "./datasets/SR_branches_datasets_for_train/class3_validation/LR"]
+
+# mkdir destination directory
+for dir in destination:
+    if os.path.exists(dir):
+        pass
+    else:
+        os.makedirs(dir)
+
+for i in range(6):
+    path = mk_dataset_idx[i]
+    f = open(path, 'r')
+    lines = f.readlines()
+
+    print("Currently generate datasets : ",mk_dataset_idx[i].split("/")[3])
+    for line in tqdm(lines):
+        GT_name = line.split(", ")[1]
+        LR_name = line.split(", ")[2][:-1]
+
+        GT_path = os.path.join("./datasets/train_GT_sub_img", GT_name)
+        LR_path = os.path.join("./datasets/train_LR_sub_img", LR_name)
 
 
+        shutil.copy(GT_path, destination[2*i])
+        shutil.copy(LR_path, destination[2*i+1])
+    
