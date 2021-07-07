@@ -15,11 +15,11 @@ def define_G(opt):
     which_model = opt_net['which_model_G']
 
     # image restoration
-    if which_model == '':
-        netG = SRResNet_arch.(in_nc=opt_net['in_nc'], out_nc=opt_net['out_nc'],
-                                       nf=opt_net['nf'], nb=opt_net['nb'], upscale=opt_net['scale'])
+    # if which_model == ' ':
+    #     netG = SRResNet_arch.(in_nc=opt_net['in_nc'], out_nc=opt_net['out_nc'],
+    #                                    nf=opt_net['nf'], nb=opt_net['nb'], upscale=opt_net['scale'])
 
-    elif which_model == 'RCAN':
+    if which_model == 'RCAN':
         netG = RCAN_arch.RCAN(n_resblocks=opt_net['n_resblocks'], n_feats=opt_net['n_feats'],
                               res_scale=opt_net['res_scale'], n_colors=opt_net['n_colors'],rgb_range=opt_net['rgb_range'],
                               scale=opt_net['scale'],reduction=opt_net['reduction'],n_resgroups=opt_net['n_resgroups'])
