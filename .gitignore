@@ -2,4 +2,5 @@
 
 *.png
 *.csv
-*.txt
+*.yml
+*.log

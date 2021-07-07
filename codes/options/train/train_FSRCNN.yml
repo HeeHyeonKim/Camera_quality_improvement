@@ -3,7 +3,7 @@ name: FSRCNN_branch1
 use_tb_logger: true
 model: sr
 distortion: sr
-scale: 4
+scale: 0         # default 4 -> 0
 gpu_ids: [0]
 
 #### network structures
@@ -19,10 +19,10 @@ network_G:
 #### datasets
 datasets:
   train:
-    name: DIV2K
+    name: Light
     mode: LQGT
-    dataroot_GT: /data0/xtkong/data/DIV2K_scale_sub_psnr_GT_class1
-    dataroot_LQ: /data0/xtkong/data/DIV2K_scale_sub_psnr_LR_class1
+    dataroot_GT: /datasets/SR_branches_datasets_for_train/class1_train/GT
+    dataroot_LQ: /datasets/SR_branches_datasets_for_train/class1_train/LR
 
 
     use_shuffle: true
@@ -35,8 +35,8 @@ datasets:
   val:
     name: set5
     mode: LQGT
-    dataroot_GT: /data0/xtkong/ClassSR/datasets/Set5/HR.lmdb
-    dataroot_LQ: /data0/xtkong/ClassSR/datasets/Set5/LR.lmdb
+    dataroot_GT: /datasets/SR_branches_datasets_for_train/class1_validation/GT
+    dataroot_LQ: /datasets/SR_branches_datasets_for_train/class1_validation/LR
 
 
 #### path

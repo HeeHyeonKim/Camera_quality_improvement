@@ -29,8 +29,10 @@ class FSRCNN_net(torch.nn.Module):
         # Deconvolution
         # H out = (H in −1) × stride −(2 × padding) + kernel_size + output_padding
         # H out = (H in) -6 + 9 + 1
-        self.tail_conv = nn.ConvTranspose2d(in_channels=d, out_channels=input_channels, kernel_size=9,
-                                            stride=upscale, padding=3, output_padding=1)
+        # self.tail_conv = nn.ConvTranspose2d(in_channels=d, out_channels=input_channels, kernel_size=9,
+        #                                     stride=upscale, padding=3, output_padding=1)
+
+        self.tail_conv = nn.Conv2d(in_channels=s, out_channels=input_channels, kernel_size=3, stride=1, padding=1)
 
 
         arch_util.initialize_weights([self.head_conv, self.body_conv, self.tail_conv], 0.1)

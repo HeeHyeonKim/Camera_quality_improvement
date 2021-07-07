@@ -16,7 +16,8 @@ class LQGTDataset(data.Dataset):
     def __init__(self, opt):
         super(LQGTDataset, self).__init__()
         self.opt = opt
-        self.data_type = self.opt['data_type']
+        self.data_type = self.opt['data_type'] # lmdb, img or mc 
+
         self.paths_LQ, self.paths_GT = None, None
         self.sizes_LQ, self.sizes_GT = None, None
         self.LQ_env, self.GT_env = None, None  # environments for lmdb

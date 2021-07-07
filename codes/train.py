@@ -105,8 +105,10 @@ def main():
     for phase, dataset_opt in opt['datasets'].items():
         if phase == 'train':
             train_set = create_dataset(dataset_opt)
+            # num iterations
             train_size = int(math.ceil(len(train_set) / dataset_opt['batch_size']))
             total_iters = int(opt['train']['niter'])
+            # total iteration => 총 가중치 업데이트 횟수 epcohs = total_iters / train_size
             total_epochs = int(math.ceil(total_iters / train_size))
             if opt['dist']:
                 train_sampler = DistIterSampler(train_set, world_size, rank, dataset_ratio)
