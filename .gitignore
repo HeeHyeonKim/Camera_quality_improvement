@@ -4,3 +4,6 @@
 *.csv
 *.yml
 *.log
+*.pth
+*.state
+*.pyc
