@@ -10,7 +10,9 @@ import time
 class classSR_3class_fsrcnn_net(nn.Module):
     def __init__(self, in_nc=3, out_nc=3):
         super(classSR_3class_fsrcnn_net, self).__init__()
-        self.upscale=4
+        
+        self.upscale= 1
+        
         self.classifier=Classifier()
         self.net1 = FSRCNN_net(in_nc,self.upscale,16,12,4)
         self.net2 = FSRCNN_net(in_nc,self.upscale,36,12,4)
@@ -77,6 +79,7 @@ class Classifier(nn.Module):
                                      nn.Conv2d(128, 128, 1), nn.LeakyReLU(0.1, True),
                                      nn.Conv2d(128, 32, 1))
         arch_util.initialize_weights([self.CondNet], 0.1)
+        
     def forward(self, x):
         out = self.CondNet(x)
         out = nn.AvgPool2d(out.size()[2])(out)

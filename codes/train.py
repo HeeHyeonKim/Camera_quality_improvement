@@ -206,7 +206,8 @@ def main():
                     util.save_img(sr_img, save_img_path)
 
                     # calculate PSNR
-                    sr_img, gt_img = util.crop_border([sr_img, gt_img], opt['scale'])
+                    # sr_img, gt_img = util.crop_border([sr_img, gt_img], opt['scale'])
+                    sr_img, gt_img = util.crop_border([sr_img, gt_img], 0)
                     avg_psnr += util.calculate_psnr(sr_img, gt_img)
                     pbar.update('Test {}'.format(img_name))
 
