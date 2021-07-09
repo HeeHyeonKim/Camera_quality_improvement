@@ -123,7 +123,6 @@ def split_dataset_txt(train_data_path, txt_path, train_size=0.85, random_state=1
 
     print("\n Completely split all dataset.")
 
-
     
     # 1. SR Branches에 대한 Train, Validation set (.txt) split
 
@@ -195,11 +194,42 @@ def split_dataset_txt(train_data_path, txt_path, train_size=0.85, random_state=1
     """
 
     # 3. Pretrain pth (가중치) 파일의 구조를 확인하기 위한 작업
-    """ 
+
+    """
     path = "./FSRCNN_branch3.pth"
+
     pretrain = torch.load(path)
 
     for item in pretrain :
-        print("Key: ", item, "\t", "Value", pretrain[item].shape)
-    
+        print("Key: ", item, "\t", "Value : ", pretrain[item].shape)
     """
+
+# # 4. ClassSR 학습을 위한 Train, Validation (.png) split
+
+mk_dataset_idx = ["./datasets/ClassSR_datasets_for_train/train.txt",
+            "./datasets/ClassSR_datasets_for_train/validation.txt",]
+
+destination = ["./datasets/ClassSR_datasets_for_train/train/GT",
+        "./datasets/ClassSR_datasets_for_train/train/LR",
+        "./datasets/ClassSR_datasets_for_train/validation/GT",
+        "./datasets/ClassSR_datasets_for_train/validation/LR",]
+
+# mkdir destination directory
+for dir in destination:
+    if os.path.exists(dir):
+        pass
+    else:
+        os.makedirs(dir)
+
+for i in range(2):
+    path = mk_dataset_idx[i]
+    f = open(path, 'r')
+    lines = f.readlines()
+    print("Currently generate datasets : ",mk_dataset_idx[i].split("/")[3])
+    for line in tqdm(lines):
+        GT_name = line.split(", ")[1]
+        LR_name = line.split(", ")[2][:-1]
+        GT_path = os.path.join("./datasets/train_GT_sub_img", GT_name)
+        LR_path = os.path.join("./datasets/train_LR_sub_img", LR_name)
+        shutil.copy(GT_path, destination[2*i])
+        shutil.copy(LR_path, destination[2*i+1])
